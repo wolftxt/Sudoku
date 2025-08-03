@@ -23,7 +23,7 @@ public class SudokuWidget extends JComponent {
     }
 
     private int getScaling(int width, int height) {
-        int w = (this.getWidth() - 2 * MARGIN) / width;
+        int w = (this.getWidth() - 4 * MARGIN) / (width + 1);
         int h = (this.getHeight() - 2 * MARGIN) / height;
         return Math.min(w, h);
     }
@@ -62,6 +62,18 @@ public class SudokuWidget extends JComponent {
                 int yStart = (y + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
                 g.drawString(Integer.toString(num), xStart, yStart);
             }
+        }
+        // Draw selectable numbers
+        int xStart = 3 * MARGIN + SIZE * s;
+        s = s * 9 / 10;
+        g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
+        for (int i = 0; i <= SIZE; i++) {
+            g.setColor(GRID);
+            g.drawRect(xStart, i * s + MARGIN, s, s);
+            g.setColor(COLORS[i]);
+            int x = xStart + s / 4; // adding s / 4 centralises the numbers
+            int y = (i + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
+            g.drawString(Integer.toString(i), x, y);
         }
     }
 
