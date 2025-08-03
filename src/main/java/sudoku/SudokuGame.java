@@ -1,5 +1,7 @@
 package sudoku;
 
+import java.util.Arrays;
+import java.util.Random;
 import lombok.Data;
 
 @Data
@@ -14,6 +16,15 @@ public class SudokuGame {
     public SudokuGame() {
         this.board = new int[SIZE][SIZE];
         this.editable = new boolean[SIZE][SIZE];
+        for (boolean[] arr : editable) {
+            Arrays.fill(arr, true);
+        }
+        Random r = new Random();
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                board[x][y] = r.nextInt(SIZE + 1);
+            }
+        }
     }
 
     public boolean placeNumber(int x, int y, int num) {
