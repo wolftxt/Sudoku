@@ -12,6 +12,7 @@ public class SudokuWidget extends JComponent {
     private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
 
     private SudokuGame game;
+    private int selected;
 
     public SudokuWidget() {
         newGame();
@@ -19,6 +20,28 @@ public class SudokuWidget extends JComponent {
 
     public void newGame() {
         game = new SudokuGame();
+        selected = 0;
+        this.repaint();
+    }
+
+    public void click(int x, int y) {
+        if (x < MARGIN || x > this.getWidth() - MARGIN || y < MARGIN || y > this.getWidth() - MARGIN) {
+            return; // Clicked inside of MARGIN
+        }
+        int SIZE = SudokuGame.SIZE;
+        int s = getScaling(SIZE, SIZE);
+        int xOffset = getXOffset(SIZE, SIZE);
+        int xStart = xOffset + 5 * MARGIN + SIZE * s; // xStart for selectable numbers
+        if (x > xStart) {
+            s = s * SIZE / (SIZE + 1);
+            y -= MARGIN;
+            selected = y / s;
+            this.repaint();
+            return;
+        }
+        x -= MARGIN;
+        y -= MARGIN;
+        game.placeNumber(x / s, y / s, selected);
         this.repaint();
     }
 
@@ -77,7 +100,7 @@ public class SudokuWidget extends JComponent {
         }
         // Draw selectable numbers
         int xStart = xOffset + 5 * MARGIN + SIZE * s;
-        s = s * 9 / 10;
+        s = s * SIZE / (SIZE + 1);
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
         for (int i = 0; i <= SIZE; i++) {
             g.setColor(GRID);

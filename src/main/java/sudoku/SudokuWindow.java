@@ -2,6 +2,8 @@ package sudoku;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.BorderLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -17,8 +19,13 @@ public class SudokuWindow extends javax.swing.JFrame {
     }
 
     private void initComponents() {
-
         widget = new SudokuWidget();
+        widget.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                widget.click(e.getX(), e.getY());
+            }
+        });
 
         this.setLayout(new BorderLayout());
 

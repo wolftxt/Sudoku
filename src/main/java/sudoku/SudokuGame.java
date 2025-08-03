@@ -10,10 +10,12 @@ public class SudokuGame {
     public static final int SIZE = 9;
 
     // 0 is empty, 1-9 are numbers
+    private boolean won;
     private int[][] board;
     private boolean[][] editable;
 
     public SudokuGame() {
+        this.won = false;
         this.board = new int[SIZE][SIZE];
         this.editable = new boolean[SIZE][SIZE];
         for (boolean[] arr : editable) {
@@ -27,12 +29,12 @@ public class SudokuGame {
         }
     }
 
-    public boolean placeNumber(int x, int y, int num) {
+    public void placeNumber(int x, int y, int num) {
         if (!editable[x][y]) {
-            return false;
+            return;
         }
         board[x][y] = num;
-        return checkWin();
+        checkWin();
     }
 
     private boolean checkWin() {
