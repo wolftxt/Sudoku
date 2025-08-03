@@ -21,12 +21,6 @@ public class SudokuGame {
         for (boolean[] arr : editable) {
             Arrays.fill(arr, true);
         }
-        Random r = new Random();
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                board[x][y] = r.nextInt(SIZE + 1);
-            }
-        }
     }
 
     public void placeNumber(int x, int y, int num) {
@@ -34,10 +28,10 @@ public class SudokuGame {
             return;
         }
         board[x][y] = num;
-        checkWin();
+        won = isFull();
     }
 
-    private boolean checkWin() {
+    private boolean isFull() {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 if (board[x][y] == 0) {
@@ -45,7 +39,7 @@ public class SudokuGame {
                 }
             }
         }
-        return SudokuSolver.isBoardLegal(board);
+        return true;
     }
 
 }
