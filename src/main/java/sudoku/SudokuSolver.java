@@ -13,10 +13,10 @@ public class SudokuSolver {
                 return false;
             }
         }
-        for (int x = 0; x < SIZE; x++) {
+        for (int y = 0; y < SIZE; y++) {
             int[][] col = new int[1][SIZE];
-            for (int y = 0; y < SIZE; y++) {
-                col[0][y] = board[x][y];
+            for (int x = 0; x < SIZE; x++) {
+                col[0][x] = board[x][y];
             }
             if (!isSubarrayLegal(col)) {
                 return false;
