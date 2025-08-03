@@ -40,6 +40,9 @@ public class SudokuGame {
         if (!editable[x][y]) {
             return false;
         }
+        if (board[x][y] == num) {
+            return false;
+        }
         int previous = board[x][y];
         board[x][y] = num;
         if (!SudokuSolver.isBoardLegal(board)) {
