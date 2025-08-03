@@ -40,6 +40,16 @@ public class SudokuWidget extends JComponent {
                 g.drawRect(x * s, y * s, s, s);
             }
         }
+        // Draw thicker grid around 3x3 parts
+        int thickness = 5;
+        int offset = thickness / 2;
+        int count = (int) Math.sqrt(SIZE);
+        for (int x = 0; x <= count; x++) {
+            g.fillRect(count * x * s - offset, -offset, thickness, s * SIZE + thickness);
+        }
+        for (int y = 0; y <= count; y++) {
+            g.fillRect(-offset, count * y * s - offset, s * SIZE + thickness, thickness);
+        }
         // Draw numbers
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
         for (int x = 0; x < SIZE; x++) {
