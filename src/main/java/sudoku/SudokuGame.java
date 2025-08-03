@@ -6,14 +6,14 @@ import lombok.Data;
 
 @Data
 public class SudokuGame {
-    
+
     public static final int SIZE = 9;
 
     // 0 is empty, 1-9 are numbers
     private boolean won;
     private int[][] board;
     private boolean[][] editable;
-    
+
     public SudokuGame(int originalPieceCount) {
         if (originalPieceCount < 0 || originalPieceCount > SIZE * SIZE) {
             throw new RuntimeException("Trying to start a game with an illegal piece count");
@@ -35,7 +35,21 @@ public class SudokuGame {
         }
         won = isFull();
     }
-    
+
+    public boolean isPlacementLegal(int x, int y, int num) {
+        if (!editable[x][y]) {
+            return false;
+        }
+        int previous = board[x][y];
+        board[x][y] = num;
+        if (!SudokuSolver.isBoardLegal(board)) {
+            board[x][y] = previous;
+            return false;
+        }
+        board[x][y] = previous;
+        return true;
+    }
+
     public boolean placeNumber(int x, int y, int num) {
         if (!editable[x][y]) {
             return false;
@@ -49,7 +63,7 @@ public class SudokuGame {
         won = isFull();
         return true;
     }
-    
+
     private boolean isFull() {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -60,5 +74,5 @@ public class SudokuGame {
         }
         return true;
     }
-    
+
 }

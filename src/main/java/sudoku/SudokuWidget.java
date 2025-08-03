@@ -11,7 +11,10 @@ public class SudokuWidget extends JComponent {
     private static final int MARGIN = 5;
     private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
     private static final Color SELECTEDCOLOR = new Color(255, 255, 0, 100);
+
+    private static final Color NOTEDITABLE = Color.GRAY;
     private static final Color WONCOLOR = new Color(0, 255, 0, 100);
+    private static final Color LEGALMOVECOLOR = new Color(0, 255, 0, 20);
 
     private SudokuGame game;
     private int selected;
@@ -86,6 +89,15 @@ public class SudokuWidget extends JComponent {
 
         int s = getScaling(SIZE, SIZE);
         int xOffset = getXOffset(SIZE, SIZE);
+
+        // Draw opaque colors
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                g.setColor(getHighlightColor(x, y));
+                g.fillRect(xOffset + x * s + MARGIN, y * s + MARGIN, s, s);
+            }
+        }
+
         // Draw grid
         g.setColor(GRID);
         for (int x = 0; x < SIZE; x++) {
@@ -102,15 +114,6 @@ public class SudokuWidget extends JComponent {
         }
         for (int y = 0; y <= count; y++) {
             g.fillRect(xOffset - offset + MARGIN, count * y * s - offset + MARGIN, s * SIZE + thickness, thickness);
-        }
-        // Draw winning color
-        if (game.isWon()) {
-            g.setColor(WONCOLOR);
-            for (int x = 0; x < SIZE; x++) {
-                for (int y = 0; y < SIZE; y++) {
-                    g.fillRect(xOffset + x * s + MARGIN, y * s + MARGIN, s, s);
-                }
-            }
         }
         // Draw numbers
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
@@ -139,6 +142,19 @@ public class SudokuWidget extends JComponent {
             int y = (i + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
             g.drawString(Integer.toString(i), x, y);
         }
+    }
+
+    private Color getHighlightColor(int x, int y) {
+        if (!game.getEditable()[x][y]) {
+            return NOTEDITABLE;
+        }
+        if (game.isWon()) {
+            return WONCOLOR;
+        }
+        if (selected != 0 && game.isPlacementLegal(x, y, selected)) {
+            return LEGALMOVECOLOR;
+        }
+        return COLORS[0];
     }
 
 }
