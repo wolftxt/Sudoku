@@ -19,6 +19,7 @@ public class SudokuWidget extends JComponent {
 
     public void newGame() {
         game = new SudokuGame();
+        this.repaint();
     }
 
     private int getScaling(int width, int height) {

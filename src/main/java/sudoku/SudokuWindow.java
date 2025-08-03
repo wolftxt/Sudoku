@@ -2,9 +2,9 @@ package sudoku;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.WindowConstants;
 
 public class SudokuWindow extends javax.swing.JFrame {
@@ -25,23 +25,27 @@ public class SudokuWindow extends javax.swing.JFrame {
         this.add(widget, BorderLayout.CENTER);
 
         JMenuBar menuBar = new JMenuBar();
+        JMenu game = new JMenu("Game");
 
-        JMenu newGame = new JMenu("New Game");
+        JMenuItem newGame = new JMenuItem("New Game");
         newGame.addActionListener(e -> widget.newGame());
-        menuBar.add(newGame);
+        game.add(newGame);
 
-        JMenu hint = new JMenu("Hint");
+        game.addSeparator();
+
+        JMenuItem hint = new JMenuItem("Hint");
         hint.addActionListener(e -> {
-            throw new RuntimeException("NOT IMPLEMENTED");
+            System.out.println("NOT IMPLEMENTED");
         });
-        menuBar.add(hint);
+        game.add(hint);
 
-        JMenu solve = new JMenu("Solve");
+        JMenuItem solve = new JMenuItem("Solve");
         solve.addActionListener(e -> {
-            throw new RuntimeException("NOT IMPLEMENTED");
+            System.out.println("NOT IMPLEMENTED");
         });
-        menuBar.add(solve);
+        game.add(solve);
 
+        menuBar.add(game);
         this.setJMenuBar(menuBar);
     }
 
