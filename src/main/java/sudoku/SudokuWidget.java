@@ -36,14 +36,20 @@ public class SudokuWidget extends JComponent {
         if (x > xStart) {
             s = s * SIZE / (SIZE + 1);
             y -= MARGIN;
-            selected = y / s;
-            this.repaint();
+            if (y / s >= 0 && y / s <= SIZE) {
+                selected = y / s;
+                this.repaint();
+            }
             return;
         }
-        x -= MARGIN;
+        x -= MARGIN + xOffset;
         y -= MARGIN;
-        game.placeNumber(x / s, y / s, selected);
-        this.repaint();
+        x /= s;
+        y /= s;
+        if (x >= 0 && x < SIZE && y >= 0 && y < SIZE) {
+            game.placeNumber(x, y, selected);
+            this.repaint();
+        }
     }
 
     private int getScaling(int width, int height) {
