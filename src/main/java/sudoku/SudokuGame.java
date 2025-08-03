@@ -25,7 +25,7 @@ public class SudokuGame {
         }
         Random r = new Random();
         while (originalPieceCount > 0) {
-            int num = r.nextInt(SIZE + 1);
+            int num = r.nextInt(1, SIZE + 1);
             int x = r.nextInt(SIZE);
             int y = r.nextInt(SIZE);
             if (placeNumber(x, y, num)) {
