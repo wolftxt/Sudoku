@@ -23,9 +23,20 @@ public class SudokuWidget extends JComponent {
     }
 
     private int getScaling(int width, int height) {
-        int w = (this.getWidth() - 4 * MARGIN) / (width + 1);
+        int w = (this.getWidth() - 6 * MARGIN) / (width + 1); // 4 MARGINS for space between board and selectable numbers
         int h = (this.getHeight() - 2 * MARGIN) / height;
         return Math.min(w, h);
+    }
+
+    private int getXOffset(int width, int height) {
+        int w = (this.getWidth() - 6 * MARGIN) / (width + 1); // 4 MARGINS for space between board and selectable numbers
+        int h = (this.getHeight() - 2 * MARGIN) / height;
+        int s = Math.min(w, h);
+        if (s == w) {
+            return 0;
+        }
+        int xSpace = 6 * MARGIN + (width + 1) * s;
+        return (this.getWidth() - xSpace) / 2;
     }
 
     @Override
@@ -35,11 +46,12 @@ public class SudokuWidget extends JComponent {
         int[][] board = game.getBoard();
 
         int s = getScaling(SIZE, SIZE);
+        int xOffset = getXOffset(SIZE, SIZE);
         // Draw grid
         g.setColor(GRID);
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
-                g.drawRect(x * s + MARGIN, y * s + MARGIN, s, s);
+                g.drawRect(xOffset + x * s + MARGIN, y * s + MARGIN, s, s);
             }
         }
         // Draw thicker grid around 3x3 parts
@@ -47,10 +59,10 @@ public class SudokuWidget extends JComponent {
         int offset = thickness / 2;
         int count = (int) Math.sqrt(SIZE);
         for (int x = 0; x <= count; x++) {
-            g.fillRect(count * x * s - offset + MARGIN, -offset + MARGIN, thickness, s * SIZE + thickness);
+            g.fillRect(xOffset + count * x * s - offset + MARGIN, -offset + MARGIN, thickness, s * SIZE + thickness);
         }
         for (int y = 0; y <= count; y++) {
-            g.fillRect(-offset + MARGIN, count * y * s - offset + MARGIN, s * SIZE + thickness, thickness);
+            g.fillRect(xOffset - offset + MARGIN, count * y * s - offset + MARGIN, s * SIZE + thickness, thickness);
         }
         // Draw numbers
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
@@ -58,13 +70,13 @@ public class SudokuWidget extends JComponent {
             for (int y = 0; y < SIZE; y++) {
                 int num = board[x][y];
                 g.setColor(COLORS[num]);
-                int xStart = x * s + s / 4 + MARGIN; // adding s / 4 centralises the numbers
+                int xStart = xOffset + x * s + s / 4 + MARGIN; // adding s / 4 centralises the numbers
                 int yStart = (y + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
                 g.drawString(Integer.toString(num), xStart, yStart);
             }
         }
         // Draw selectable numbers
-        int xStart = 3 * MARGIN + SIZE * s;
+        int xStart = xOffset + 5 * MARGIN + SIZE * s;
         s = s * 9 / 10;
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
         for (int i = 0; i <= SIZE; i++) {
