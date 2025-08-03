@@ -11,7 +11,7 @@ public class SudokuGameTest {
 
     @Test
     public void testPlaceNumber() {
-        SudokuGame game = new SudokuGame();
+        SudokuGame game = new SudokuGame(0);
         int[][] winningBoard = new int[][]{{9, 1, 2, 8, 4, 6, 5, 7, 3},
         {6, 8, 3, 5, 7, 1, 2, 9, 4},
         {4, 5, 7, 3, 2, 9, 1, 6, 8},
