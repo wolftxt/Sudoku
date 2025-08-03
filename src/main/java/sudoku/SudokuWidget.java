@@ -11,6 +11,7 @@ public class SudokuWidget extends JComponent {
     private static final int MARGIN = 5;
     private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
     private static final Color SELECTEDCOLOR = new Color(255, 255, 0, 100);
+    private static final Color WONCOLOR = new Color(0, 255, 0, 100);
 
     private SudokuGame game;
     private int selected;
@@ -20,7 +21,7 @@ public class SudokuWidget extends JComponent {
     }
 
     public void newGame() {
-        game = new SudokuGame();
+        game = new SudokuGame(10);
         selected = 0;
         this.repaint();
     }
@@ -101,6 +102,15 @@ public class SudokuWidget extends JComponent {
         }
         for (int y = 0; y <= count; y++) {
             g.fillRect(xOffset - offset + MARGIN, count * y * s - offset + MARGIN, s * SIZE + thickness, thickness);
+        }
+        // Draw winning color
+        if (game.isWon()) {
+            g.setColor(WONCOLOR);
+            for (int x = 0; x < SIZE; x++) {
+                for (int y = 0; y < SIZE; y++) {
+                    g.fillRect(xOffset + x * s + MARGIN, y * s + MARGIN, s, s);
+                }
+            }
         }
         // Draw numbers
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));

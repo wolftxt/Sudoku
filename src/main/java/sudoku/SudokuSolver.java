@@ -16,7 +16,7 @@ public class SudokuSolver {
         for (int x = 0; x < SIZE; x++) {
             int[][] col = new int[1][SIZE];
             for (int y = 0; y < SIZE; y++) {
-                col[1][y] = board[x][y];
+                col[0][y] = board[x][y];
             }
             if (!isSubarrayLegal(col)) {
                 return false;
@@ -42,11 +42,11 @@ public class SudokuSolver {
         if (board.length * board[0].length != SIZE) {
             throw new IllegalStateException("Illegal subarray");
         }
-        boolean[] seen = new boolean[SIZE];
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                int index = board[x][y] - 1;
-                if (seen[index]) {
+        boolean[] seen = new boolean[SIZE + 1];
+        for (int x = 0; x < board.length; x++) {
+            for (int y = 0; y < board[x].length; y++) {
+                int index = board[x][y];
+                if (index != 0 && seen[index]) {
                     return false;
                 }
                 seen[index] = true;
