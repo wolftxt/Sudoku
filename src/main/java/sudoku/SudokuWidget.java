@@ -8,7 +8,7 @@ import javax.swing.JComponent;
 public class SudokuWidget extends JComponent {
 
     private static final Color GRID = Color.BLACK;
-    private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, Color.ORANGE, Color.YELLOW, Color.GREEN, Color.CYAN, Color.BLUE, Color.MAGENTA, Color.PINK, new Color(255, 128, 0)};
+    private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
 
     private SudokuGame game;
 
