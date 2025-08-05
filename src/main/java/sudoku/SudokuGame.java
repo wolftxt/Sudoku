@@ -33,7 +33,19 @@ public class SudokuGame {
                 editable[x][y] = false;
             }
         }
-        won = isFull();
+        won = SudokuSolver.isFull(board);
+    }
+
+    public boolean solve() {
+        int[][] copy = new int[SIZE][];
+        for (int i = 0; i < SIZE; i++) {
+            copy[i] = Arrays.copyOf(board[i], SIZE);
+        }
+        if (SudokuSolver.solve(copy, 0, 0)) {
+            board = copy;
+            return true;
+        }
+        return false;
     }
 
     public boolean isPlacementLegal(int x, int y, int num) {
@@ -63,19 +75,7 @@ public class SudokuGame {
             board[x][y] = previous;
             return false;
         }
-        won = isFull();
+        won = SudokuSolver.isFull(board);
         return true;
     }
-
-    private boolean isFull() {
-        for (int x = 0; x < SIZE; x++) {
-            for (int y = 0; y < SIZE; y++) {
-                if (board[x][y] == 0) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
 }

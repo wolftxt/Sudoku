@@ -23,6 +23,10 @@ public class SudokuWidget extends JComponent {
         newGame();
     }
 
+    public SudokuGame getGame() {
+        return game;
+    }
+
     public void newGame() {
         game = new SudokuGame(10);
         selected = 0;

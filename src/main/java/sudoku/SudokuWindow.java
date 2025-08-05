@@ -12,6 +12,7 @@ import java.awt.event.WindowEvent;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class SudokuWindow extends javax.swing.JFrame {
@@ -71,7 +72,11 @@ public class SudokuWindow extends javax.swing.JFrame {
 
         JMenuItem solve = new JMenuItem("Solve");
         solve.addActionListener(e -> {
-            System.out.println("NOT IMPLEMENTED");
+            if (widget.getGame().solve()) {
+                widget.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
+            }
         });
         game.add(solve);
 
