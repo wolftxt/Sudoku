@@ -62,8 +62,6 @@ public class SudokuWindow extends javax.swing.JFrame {
         newGame.addActionListener(e -> widget.newGame());
         game.add(newGame);
 
-        game.addSeparator();
-
         JMenuItem hint = new JMenuItem("Hint");
         hint.addActionListener(e -> {
             if (widget.hint()) {
@@ -83,6 +81,20 @@ public class SudokuWindow extends javax.swing.JFrame {
             }
         });
         game.add(solve);
+
+        game.addSeparator();
+
+        JMenuItem settings = new JMenuItem("Settings");
+        settings.addActionListener(e -> {
+            System.out.println("NOT IMPLEMENTED");
+        });
+        game.add(settings);
+
+        JMenuItem help = new JMenuItem("Help");
+        help.addActionListener(e -> {
+            System.out.println("NOT IMPLEMENTED");
+        });
+        game.add(help);
 
         menuBar.add(game);
         this.setJMenuBar(menuBar);
