@@ -41,6 +41,10 @@ public class SudokuWidget extends JComponent {
         this.repaint();
     }
 
+    public boolean hint() {
+        return game.hint(selected);
+    }
+
     public void click(int x, int y) {
         if (x < MARGIN || x > this.getWidth() - MARGIN || y < MARGIN || y > this.getWidth() - MARGIN) {
             return; // Clicked inside of MARGIN

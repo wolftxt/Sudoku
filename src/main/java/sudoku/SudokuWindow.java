@@ -66,7 +66,11 @@ public class SudokuWindow extends javax.swing.JFrame {
 
         JMenuItem hint = new JMenuItem("Hint");
         hint.addActionListener(e -> {
-            System.out.println("NOT IMPLEMENTED");
+            if (widget.hint()) {
+                widget.repaint();
+            } else {
+                JOptionPane.showMessageDialog(this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
+            }
         });
         game.add(hint);
 
