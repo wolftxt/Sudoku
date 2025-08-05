@@ -54,29 +54,17 @@ public class SudokuGame {
         if (!editable[x][y]) {
             return false;
         }
-        if (board[x][y] == num) {
-            return false;
-        }
-        int previous = board[x][y];
-        board[x][y] = num;
-        if (!SudokuSolver.isBoardLegal(board)) {
-            board[x][y] = previous;
-            return false;
-        }
-        board[x][y] = previous;
-        return true;
+        return SudokuSolver.isValid(board, x, y, num);
     }
 
     public boolean placeNumber(int x, int y, int num) {
         if (!editable[x][y]) {
             return false;
         }
-        int previous = board[x][y];
-        board[x][y] = num;
-        if (!SudokuSolver.isBoardLegal(board)) {
-            board[x][y] = previous;
+        if (num != 0 && !SudokuSolver.isValid(board, x, y, num)) {
             return false;
         }
+        board[x][y] = num;
         won = SudokuSolver.isFull(board);
         return true;
     }

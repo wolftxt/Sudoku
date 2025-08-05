@@ -1,7 +1,5 @@
 package sudoku;
 
-import java.util.Arrays;
-
 public class SudokuSolver {
 
     public static boolean isFull(int[][] board) {
@@ -16,52 +14,23 @@ public class SudokuSolver {
         return true;
     }
 
-    public static boolean isBoardLegal(int[][] board) {
-        final int SIZE = SudokuGame.SIZE;
-        for (int[] arr : board) {
-            int[][] row = new int[1][SIZE];
-            row[0] = arr;
-            if (!isSubarrayLegal(row)) {
+    public static boolean isValid(int[][] board, int x, int y, int num) {
+        for (int i = 0; i < board.length; i++) {
+            if (board[x][i] == num) {
+                return false;
+            }
+            if (board[i][y] == num) {
                 return false;
             }
         }
-        for (int y = 0; y < SIZE; y++) {
-            int[][] col = new int[1][SIZE];
-            for (int x = 0; x < SIZE; x++) {
-                col[0][x] = board[x][y];
-            }
-            if (!isSubarrayLegal(col)) {
-                return false;
-            }
-        }
-        int limit = (int) Math.sqrt(SIZE);
-        for (int x = 0; x < limit; x++) {
-            for (int y = 0; y < limit; y++) {
-                int[][] arr = new int[limit][limit];
-                arr[0] = Arrays.copyOfRange(board[x * limit], y * limit, y * limit + limit);
-                arr[1] = Arrays.copyOfRange(board[x * limit + 1], y * limit, y * limit + limit);
-                arr[2] = Arrays.copyOfRange(board[x * limit + 2], y * limit, y * limit + limit);
-                if (!isSubarrayLegal(arr)) {
+        int row = x - x % 3;
+        int col = y - y % 3;
+        int count = (int) Math.sqrt(board.length);
+        for (int i = 0; i < count; i++) {
+            for (int j = 0; j < count; j++) {
+                if (board[row + i][col + j] == num) {
                     return false;
                 }
-            }
-        }
-        return true;
-    }
-
-    private static boolean isSubarrayLegal(int[][] board) {
-        final int SIZE = SudokuGame.SIZE;
-        if (board.length * board[0].length != SIZE) {
-            throw new IllegalStateException("Illegal subarray");
-        }
-        boolean[] seen = new boolean[SIZE + 1];
-        for (int x = 0; x < board.length; x++) {
-            for (int y = 0; y < board[x].length; y++) {
-                int index = board[x][y];
-                if (index != 0 && seen[index]) {
-                    return false;
-                }
-                seen[index] = true;
             }
         }
         return true;
@@ -78,15 +47,15 @@ public class SudokuSolver {
             return solve(board, x + 1, y);
         }
         for (int i = 1; i <= board.length; i++) {
-            board[x][y] = i;
-            if (!isBoardLegal(board)) {
+            if (!isValid(board, x, y, i)) {
                 continue;
             }
+            board[x][y] = i;
             if (solve(board, x + 1, y)) {
                 return true;
             }
+            board[x][y] = 0;
         }
-        board[x][y] = 0;
         return false;
     }
 
