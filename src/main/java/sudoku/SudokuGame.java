@@ -28,19 +28,21 @@ public class SudokuGame {
             int num = r.nextInt(1, SIZE + 1);
             int x = r.nextInt(SIZE);
             int y = r.nextInt(SIZE);
-            if (placeNumber(x, y, num)) {
+            if (!placeNumber(x, y, num)) {
+                continue;
+            }
+            if (SudokuSolver.solve(makeBoardCopy(), 0, 0)) {
                 originalPieceCount--;
                 editable[x][y] = false;
+            } else {
+                board[x][y] = 0;
             }
         }
         won = SudokuSolver.isFull(board);
     }
 
     public boolean solve() {
-        int[][] copy = new int[SIZE][];
-        for (int i = 0; i < SIZE; i++) {
-            copy[i] = Arrays.copyOf(board[i], SIZE);
-        }
+        int[][] copy = makeBoardCopy();
         if (SudokuSolver.solve(copy, 0, 0)) {
             board = copy;
             return true;
@@ -78,4 +80,13 @@ public class SudokuGame {
         won = SudokuSolver.isFull(board);
         return true;
     }
+
+    private int[][] makeBoardCopy() {
+        int[][] copy = new int[SIZE][];
+        for (int i = 0; i < SIZE; i++) {
+            copy[i] = Arrays.copyOf(board[i], SIZE);
+        }
+        return copy;
+    }
+
 }
