@@ -4,6 +4,18 @@ import java.util.Arrays;
 
 public class SudokuSolver {
 
+    public static boolean isFull(int[][] board) {
+        int SIZE = SudokuGame.SIZE;
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                if (board[x][y] == 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
     public static boolean isBoardLegal(int[][] board) {
         final int SIZE = SudokuGame.SIZE;
         for (int[] arr : board) {
@@ -55,8 +67,27 @@ public class SudokuSolver {
         return true;
     }
 
-    public static int[][] solve(int[][] board) {
-        throw new IllegalStateException("Not solvable");
+    public static boolean solve(int[][] board, int x, int y) {
+        if (y >= board[0].length) {
+            return true;
+        }
+        if (x >= board.length) {
+            return solve(board, 0, y + 1);
+        }
+        if (board[x][y] != 0) {
+            return solve(board, x + 1, y);
+        }
+        for (int i = 1; i <= board.length; i++) {
+            board[x][y] = i;
+            if (!isBoardLegal(board)) {
+                continue;
+            }
+            if (solve(board, x + 1, y)) {
+                return true;
+            }
+        }
+        board[x][y] = 0;
+        return false;
     }
 
 }
