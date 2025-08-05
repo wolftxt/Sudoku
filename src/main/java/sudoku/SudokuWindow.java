@@ -76,15 +76,22 @@ public class SudokuWindow extends javax.swing.JFrame {
                     }
                     case KeyEvent.VK_H -> {
                         eventQueue.add(() -> {
-                            widget.hint();
+                            if (widget.hint()) {
+                                widget.repaint();
+                            } else {
+                                JOptionPane.showMessageDialog(SudokuWindow.this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
+                            }
                         });
                     }
                     case KeyEvent.VK_S -> {
                         eventQueue.add(() -> {
-                            widget.getGame().solve();
-                            widget.repaint();
+                            if (widget.getGame().solve()) {
+                                widget.repaint();
+                            } else {
+                                JOptionPane.showMessageDialog(SudokuWindow.this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
+                            }
                         });
-                    }
+                    } 
                 }
             }
         });
@@ -106,7 +113,9 @@ public class SudokuWindow extends javax.swing.JFrame {
         JMenuItem hint = new JMenuItem("Hint");
         hint.addActionListener(e -> {
             eventQueue.add(() -> {
-                if (!widget.hint()) {
+                if (widget.hint()) {
+                    widget.repaint();
+                } else {
                     JOptionPane.showMessageDialog(this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
                 }
             });
