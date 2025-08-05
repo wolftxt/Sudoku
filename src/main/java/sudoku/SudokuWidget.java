@@ -28,8 +28,24 @@ public class SudokuWidget extends JComponent {
     }
 
     public void newGame() {
-        game = new SudokuGame(10);
+        Thread current = Thread.currentThread();
+        Thread interruptThread = Thread.ofVirtual().start(() -> {
+            try {
+                Thread.sleep(100);
+                current.interrupt();
+            } catch (InterruptedException ex) {
+            }
+        });
+        boolean success = false;
+        while (!success) {
+            try {
+                game = new SudokuGame(10);
+                success = true;
+            } catch (InterruptedException e) {
+            }
+        }
         selected = 0;
+        interruptThread.interrupt();
         this.repaint();
     }
 

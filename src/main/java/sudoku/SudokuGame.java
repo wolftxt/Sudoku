@@ -16,7 +16,7 @@ public class SudokuGame {
     private int[][] board;
     private boolean[][] editable;
 
-    public SudokuGame(int originalPieceCount) {
+    public SudokuGame(int originalPieceCount) throws InterruptedException {
         if (originalPieceCount < 0 || originalPieceCount > SIZE * SIZE) {
             throw new RuntimeException("Trying to start a game with an illegal piece count");
         }
@@ -45,36 +45,44 @@ public class SudokuGame {
 
     public boolean hint(int num) {
         int[][] copy = makeBoardCopy();
-        if (SudokuSolver.solve(copy, 0, 0)) {
-            List<int[]> list = new ArrayList();
-            for (int x = 0; x < SIZE; x++) {
-                for (int y = 0; y < SIZE; y++) {
-                    if (num == 0) {
-                        if (board[x][y] == 0) {
-                            list.add(new int[]{x, y});
-                        }
-                    } else {
-                        if (board[x][y] == 0 && copy[x][y] == num) {
-                            list.add(new int[]{x, y});
+        try {
+            if (SudokuSolver.solve(copy, 0, 0)) {
+                List<int[]> list = new ArrayList();
+                for (int x = 0; x < SIZE; x++) {
+                    for (int y = 0; y < SIZE; y++) {
+                        if (num == 0) {
+                            if (board[x][y] == 0) {
+                                list.add(new int[]{x, y});
+                            }
+                        } else {
+                            if (board[x][y] == 0 && copy[x][y] == num) {
+                                list.add(new int[]{x, y});
+                            }
                         }
                     }
                 }
+                if (list.size() > 0) {
+                    Random r = new Random();
+                    int[] randomPoint = list.get(r.nextInt(list.size()));
+                    board[randomPoint[0]][randomPoint[1]] = copy[randomPoint[0]][randomPoint[1]];
+                }
+                return true;
             }
-            if (list.size() > 0) {
-                Random r = new Random();
-                int[] randomPoint = list.get(r.nextInt(list.size()));
-                board[randomPoint[0]][randomPoint[1]] = copy[randomPoint[0]][randomPoint[1]];
-            }
-            return true;
+        } catch (InterruptedException ex) {
+            System.err.println("InterruptedException was unexpectedly thrown upon a user called solve methods");
         }
         return false;
     }
 
     public boolean solve() {
         int[][] copy = makeBoardCopy();
-        if (SudokuSolver.solve(copy, 0, 0)) {
-            board = copy;
-            return true;
+        try {
+            if (SudokuSolver.solve(copy, 0, 0)) {
+                board = copy;
+                return true;
+            }
+        } catch (InterruptedException ex) {
+            System.err.println("InterruptedException was unexpectedly thrown upon a user called solve methods");
         }
         return false;
     }

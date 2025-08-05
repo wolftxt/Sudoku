@@ -36,7 +36,10 @@ public class SudokuSolver {
         return true;
     }
 
-    public static boolean solve(int[][] board, int x, int y) {
+    public static boolean solve(int[][] board, int x, int y) throws InterruptedException {
+        if (Thread.interrupted()) {
+            throw new InterruptedException("Was interrupted during the solve method");
+        }
         if (y >= board[0].length) {
             return true;
         }
