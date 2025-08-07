@@ -41,6 +41,10 @@ public class SudokuWindow extends javax.swing.JFrame {
         }).start();
     }
 
+    private void help() {
+        JOptionPane.showMessageDialog(this, "", "Welcome to Sudoku", JOptionPane.PLAIN_MESSAGE);
+    }
+
     private void initComponents() {
         widget = new SudokuWidget();
         widget.addMouseMotionListener(new MouseMotionAdapter() {
@@ -91,7 +95,7 @@ public class SudokuWindow extends javax.swing.JFrame {
                                 JOptionPane.showMessageDialog(SudokuWindow.this, "Game is not solvable", "Solution not found", JOptionPane.ERROR_MESSAGE);
                             }
                         });
-                    } 
+                    }
                 }
             }
         });
@@ -144,7 +148,7 @@ public class SudokuWindow extends javax.swing.JFrame {
 
         JMenuItem help = new JMenuItem("Help");
         help.addActionListener(e -> {
-            System.out.println("NOT IMPLEMENTED");
+            help();
         });
         game.add(help);
 
