@@ -70,7 +70,7 @@ public class Settings implements Serializable {
     public int SUDOKU_BOARD_SIZE_DO_NOT_INPUT_MORE_THAN_4 = 3;
     public int STARTING_PIECES = 10;
     public Color SELECTED_COLOR = new Color(255, 255, 0, 100);
-    public Color NOT_EDITABLE = Color.GRAY;
+    public Color NOT_EDITABLE = new Color(255, 255, 255, 100);
     public Color WON_COLOR = new Color(0, 255, 0, 100);
     public Color LEGAL_MOVE_COLOR = new Color(0, 255, 0, 20);
 }
