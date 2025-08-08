@@ -11,11 +11,6 @@ public class SudokuWidget extends JComponent {
     private static final int MARGIN = 5;
     private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
     private static final Color DEFAULTCOLOR = Color.WHITE; // Color used for larger boards than 9x9
-    private static final Color SELECTEDCOLOR = new Color(255, 255, 0, 100);
-
-    private static final Color NOTEDITABLE = Color.GRAY;
-    private static final Color WONCOLOR = new Color(0, 255, 0, 100);
-    private static final Color LEGALMOVECOLOR = new Color(0, 255, 0, 20);
 
     private SudokuGame game;
     private int selected;
@@ -30,14 +25,14 @@ public class SudokuWidget extends JComponent {
 
     public void newGame() {
         Settings settings = Settings.getInstance();
-        final int size = settings.SUDOKU_BOARD_SIZE;
+        final int size = settings.SUDOKU_BOARD_SIZE_DO_NOT_INPUT_MORE_THAN_4;
         Thread current = Thread.currentThread();
         Thread interruptThread = Thread.ofVirtual().start(() -> {
             try {
                 // Uses an very bad estimate of the average time complexity of O(n^5)
                 // this check is necessary because the worst case time complexity of the 3x3 board is O(9^n)
                 double pieces = Math.pow(size, 4);
-                double factor = Math.pow(pieces, 10) / Math.pow(81, 10);
+                double factor = Math.pow(pieces, 5) / Math.pow(81, 5);
                 long time = Math.max(100, (long) factor * 100);
                 Thread.sleep(time);
                 current.interrupt();
@@ -47,7 +42,7 @@ public class SudokuWidget extends JComponent {
         boolean success = false;
         while (!success) {
             try {
-                game = new SudokuGame(settings.SUDOKU_BOARD_SIZE, settings.STARTING_PIECES);
+                game = new SudokuGame(size, settings.STARTING_PIECES);
                 success = true;
             } catch (InterruptedException e) {
             }
@@ -122,6 +117,8 @@ public class SudokuWidget extends JComponent {
         int s = getScaling(SIZE, SIZE);
         int xOffset = getXOffset(SIZE, SIZE);
 
+        Settings settings = Settings.getInstance();
+
         // Draw opaque colors
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -165,7 +162,7 @@ public class SudokuWidget extends JComponent {
         g.setFont(new Font("SudokuFont", Font.BOLD, s * 2 / 3));
         for (int i = 0; i <= SIZE; i++) {
             if (selected == i) {
-                g.setColor(SELECTEDCOLOR);
+                g.setColor(settings.SELECTED_COLOR);
                 g.fillRect(xStart, i * s + MARGIN, s, s);
             }
             g.setColor(GRID);
@@ -179,14 +176,15 @@ public class SudokuWidget extends JComponent {
     }
 
     private Color getHighlightColor(int x, int y) {
+        Settings settings = Settings.getInstance();
         if (!game.getEditable()[x][y]) {
-            return NOTEDITABLE;
+            return settings.NOT_EDITABLE;
         }
         if (game.isWon()) {
-            return WONCOLOR;
+            return settings.WON_COLOR;
         }
         if (selected != 0 && game.isPlacementLegal(x, y, selected)) {
-            return LEGALMOVECOLOR;
+            return settings.LEGAL_MOVE_COLOR;
         }
         return COLORS[0];
     }
