@@ -2,13 +2,9 @@ package sudoku;
 
 import com.formdev.flatlaf.FlatDarkLaf;
 import java.awt.BorderLayout;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.Component;
+import java.awt.Font;
+import java.awt.event.*;
 import java.util.concurrent.LinkedBlockingQueue;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -17,6 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 public class SudokuWindow extends javax.swing.JFrame {
+
+    JMenuBar bar;
 
     private LinkedBlockingQueue<Runnable> eventQueue;
 
@@ -30,6 +28,19 @@ public class SudokuWindow extends javax.swing.JFrame {
                 widget.requestFocusInWindow();
             }
         });
+        this.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                int menuSize = SudokuWindow.this.getHeight() / 35;
+                int itemSize = SudokuWindow.this.getHeight() / 50;
+                Font menuFont = new Font("BarFont", Font.PLAIN, menuSize);
+                Font itemFont = new Font("BarFont", Font.PLAIN, itemSize);
+                setJMenuBarFont(bar, menuFont, itemFont);
+                bar.revalidate();
+                bar.repaint();
+            }
+        });
+
         eventQueue = new LinkedBlockingQueue();
         new Thread(() -> {
             while (true) {
@@ -103,7 +114,11 @@ public class SudokuWindow extends javax.swing.JFrame {
 
         this.add(widget, BorderLayout.CENTER);
 
-        JMenuBar menuBar = new JMenuBar();
+        addMenuBar();
+    }
+
+    private void addMenuBar() {
+        bar = new JMenuBar();
         JMenu game = new JMenu("Game");
 
         JMenuItem newGame = new JMenuItem("New Game");
@@ -152,8 +167,30 @@ public class SudokuWindow extends javax.swing.JFrame {
         });
         game.add(help);
 
-        menuBar.add(game);
-        this.setJMenuBar(menuBar);
+        bar.add(game);
+        this.setJMenuBar(bar);
+    }
+
+    public static void setJMenuBarFont(JMenuBar menuBar, Font menuFont, Font itemFont) {
+        for (Component component : menuBar.getComponents()) {
+            if (component instanceof JMenu menu) {
+                menu.setFont(menuFont);
+                setMenuFont(menu, menuFont, itemFont);
+            } else {
+                component.setFont(itemFont);
+            }
+        }
+    }
+
+    private static void setMenuFont(JMenu menu, Font menuFont, Font itemFont) {
+        for (Component component : menu.getMenuComponents()) {
+            if (component instanceof JMenu jMenu) {
+                jMenu.setFont(menuFont);
+                setMenuFont(menu, menuFont, itemFont);
+            } else {
+                component.setFont(itemFont);
+            }
+        }
     }
 
     public static void main(String args[]) {
