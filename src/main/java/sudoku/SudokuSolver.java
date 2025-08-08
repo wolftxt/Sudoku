@@ -3,7 +3,7 @@ package sudoku;
 public class SudokuSolver {
 
     public static boolean isFull(int[][] board) {
-        int SIZE = SudokuGame.SIZE;
+        int SIZE = board.length;
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 if (board[x][y] == 0) {
@@ -23,9 +23,9 @@ public class SudokuSolver {
                 return false;
             }
         }
-        int row = x - x % 3;
-        int col = y - y % 3;
         int count = (int) Math.sqrt(board.length);
+        int row = x - x % count;
+        int col = y - y % count;
         for (int i = 0; i < count; i++) {
             for (int j = 0; j < count; j++) {
                 if (board[row + i][col + j] == num) {

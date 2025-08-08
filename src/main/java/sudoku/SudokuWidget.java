@@ -10,6 +10,7 @@ public class SudokuWidget extends JComponent {
     private static final Color GRID = Color.BLACK;
     private static final int MARGIN = 5;
     private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
+    private static final Color DEFAULTCOLOR = Color.WHITE; // Color used for larger boards than 9x9
     private static final Color SELECTEDCOLOR = new Color(255, 255, 0, 100);
 
     private static final Color NOTEDITABLE = Color.GRAY;
@@ -28,10 +29,17 @@ public class SudokuWidget extends JComponent {
     }
 
     public void newGame() {
+        Settings settings = Settings.getInstance();
+        final int size = settings.SUDOKU_BOARD_SIZE;
         Thread current = Thread.currentThread();
         Thread interruptThread = Thread.ofVirtual().start(() -> {
             try {
-                Thread.sleep(100);
+                // Uses an very bad estimate of the average time complexity of O(n^5)
+                // this check is necessary because the worst case time complexity of the 3x3 board is O(9^n)
+                double pieces = Math.pow(size, 4);
+                double factor = Math.pow(pieces, 10) / Math.pow(81, 10);
+                long time = Math.max(100, (long) factor * 100);
+                Thread.sleep(time);
                 current.interrupt();
             } catch (InterruptedException ex) {
             }
@@ -39,7 +47,7 @@ public class SudokuWidget extends JComponent {
         boolean success = false;
         while (!success) {
             try {
-                game = new SudokuGame(Settings.getInstance().startingPieces);
+                game = new SudokuGame(settings.SUDOKU_BOARD_SIZE, settings.STARTING_PIECES);
                 success = true;
             } catch (InterruptedException e) {
             }
@@ -50,7 +58,7 @@ public class SudokuWidget extends JComponent {
     }
 
     public void setSelected(int val) {
-        if (val < 0 || val > SudokuGame.SIZE) {
+        if (val < 0 || val > game.getSize()) {
             return;
         }
         selected = val;
@@ -65,7 +73,7 @@ public class SudokuWidget extends JComponent {
         if (x < MARGIN || x > this.getWidth() - MARGIN || y < MARGIN || y > this.getWidth() - MARGIN) {
             return; // Clicked inside of MARGIN
         }
-        int SIZE = SudokuGame.SIZE;
+        int SIZE = game.getSize();
         int s = getScaling(SIZE, SIZE);
         int xOffset = getXOffset(SIZE, SIZE);
         int xStart = xOffset + 5 * MARGIN + SIZE * s; // xStart for selectable numbers
@@ -108,7 +116,7 @@ public class SudokuWidget extends JComponent {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-        final int SIZE = SudokuGame.SIZE;
+        final int SIZE = game.getSize();
         int[][] board = game.getBoard();
 
         int s = getScaling(SIZE, SIZE);
@@ -144,7 +152,8 @@ public class SudokuWidget extends JComponent {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 int num = board[x][y];
-                g.setColor(COLORS[num]);
+                Color c = game.getSize() > 9 && num > 9 ? DEFAULTCOLOR : COLORS[num];
+                g.setColor(c);
                 int xStart = xOffset + x * s + s / 4 + MARGIN; // adding s / 4 centralises the numbers
                 int yStart = (y + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
                 g.drawString(Integer.toString(num), xStart, yStart);
@@ -161,7 +170,8 @@ public class SudokuWidget extends JComponent {
             }
             g.setColor(GRID);
             g.drawRect(xStart, i * s + MARGIN, s, s);
-            g.setColor(COLORS[i]);
+            Color c = game.getSize() > 9 && i > 9 ? DEFAULTCOLOR : COLORS[i];
+            g.setColor(c);
             int x = xStart + s / 4; // adding s / 4 centralises the numbers
             int y = (i + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
             g.drawString(Integer.toString(i), x, y);

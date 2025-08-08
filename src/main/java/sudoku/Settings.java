@@ -65,6 +65,6 @@ public class Settings implements Serializable {
         URL url = Settings.class.getProtectionDomain().getCodeSource().getLocation();
         return new File(url.getPath()).getParentFile();
     }
-
-    public int startingPieces = 10;
+    public int SUDOKU_BOARD_SIZE = 3;
+    public int STARTING_PIECES = 10;
 }

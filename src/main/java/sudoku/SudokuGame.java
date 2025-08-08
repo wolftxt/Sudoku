@@ -9,27 +9,27 @@ import lombok.Data;
 @Data
 public class SudokuGame {
 
-    public static final int SIZE = 9;
-
-    // 0 is empty, 1-9 are numbers
+    private int size = 9;
     private boolean won;
+    // 0 is empty, 1-9 are numbers
     private int[][] board;
     private boolean[][] editable;
 
-    public SudokuGame(int originalPieceCount) throws InterruptedException {
-        if (originalPieceCount < 0 || originalPieceCount > SIZE * SIZE) {
+    public SudokuGame(int size, int originalPieceCount) throws InterruptedException {
+        this.size = size * size;
+        if (originalPieceCount < 0 || originalPieceCount > this.size * this.size) {
             throw new RuntimeException("Trying to start a game with an illegal piece count");
         }
-        this.board = new int[SIZE][SIZE];
-        this.editable = new boolean[SIZE][SIZE];
+        this.board = new int[this.size][this.size];
+        this.editable = new boolean[this.size][this.size];
         for (boolean[] arr : editable) {
             Arrays.fill(arr, true);
         }
         Random r = new Random();
         while (originalPieceCount > 0) {
-            int num = r.nextInt(1, SIZE + 1);
-            int x = r.nextInt(SIZE);
-            int y = r.nextInt(SIZE);
+            int num = r.nextInt(1, this.size + 1);
+            int x = r.nextInt(this.size);
+            int y = r.nextInt(this.size);
             if (!placeNumber(x, y, num)) {
                 continue;
             }
@@ -48,8 +48,8 @@ public class SudokuGame {
         try {
             if (SudokuSolver.solve(copy, 0, 0)) {
                 List<int[]> list = new ArrayList();
-                for (int x = 0; x < SIZE; x++) {
-                    for (int y = 0; y < SIZE; y++) {
+                for (int x = 0; x < size; x++) {
+                    for (int y = 0; y < size; y++) {
                         if (num == 0) {
                             if (board[x][y] == 0) {
                                 list.add(new int[]{x, y});
@@ -107,9 +107,9 @@ public class SudokuGame {
     }
 
     private int[][] makeBoardCopy() {
-        int[][] copy = new int[SIZE][];
-        for (int i = 0; i < SIZE; i++) {
-            copy[i] = Arrays.copyOf(board[i], SIZE);
+        int[][] copy = new int[size][];
+        for (int i = 0; i < size; i++) {
+            copy[i] = Arrays.copyOf(board[i], size);
         }
         return copy;
     }
