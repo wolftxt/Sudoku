@@ -153,7 +153,7 @@ public class SudokuWidget extends JComponent {
                 g.setColor(c);
                 int xStart = xOffset + x * s + s / 4 + MARGIN; // adding s / 4 centralises the numbers
                 int yStart = (y + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
-                g.drawString(Integer.toString(num), xStart, yStart);
+                g.drawString(Integer.toString(num, Character.MAX_RADIX), xStart, yStart);
             }
         }
         // Draw selectable numbers
@@ -171,7 +171,7 @@ public class SudokuWidget extends JComponent {
             g.setColor(c);
             int x = xStart + s / 4; // adding s / 4 centralises the numbers
             int y = (i + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
-            g.drawString(Integer.toString(i), x, y);
+            g.drawString(Integer.toString(i, Character.MAX_RADIX), x, y);
         }
     }
 
