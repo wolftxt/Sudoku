@@ -29,13 +29,16 @@ public class SudokuWidget extends JComponent {
         Thread current = Thread.currentThread();
         Thread interruptThread = Thread.ofVirtual().start(() -> {
             try {
-                // Uses an very bad estimate of the average time complexity of O(n^5)
-                // this check is necessary because the worst case time complexity of the 3x3 board is O(9^n)
-                double pieces = Math.pow(size, 4);
-                double factor = Math.pow(pieces, 5) / Math.pow(81, 5);
-                long time = Math.max(100, (long) factor * 100);
-                Thread.sleep(time);
-                current.interrupt();
+                long time = 100;
+                while (!Thread.interrupted()) {
+                    /* Uses exponential backoff to restart new game creation.
+                    This is necessary because we need to filter out randomly created 
+                    almost impossible to solve boards for small and big boards 
+                    and for hardware of any speed*/
+                    Thread.sleep(time);
+                    current.interrupt();
+                    time *= 2;
+                }
             } catch (InterruptedException ex) {
             }
         });
