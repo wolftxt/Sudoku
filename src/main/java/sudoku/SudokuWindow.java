@@ -158,6 +158,7 @@ public class SudokuWindow extends javax.swing.JFrame {
         JMenuItem settings = new JMenuItem("Settings");
         settings.addActionListener(e -> {
             new SettingsDialog(this);
+            widget.repaint();
         });
         game.add(settings);
 
