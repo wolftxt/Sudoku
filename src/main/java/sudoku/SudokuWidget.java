@@ -39,7 +39,7 @@ public class SudokuWidget extends JComponent {
         boolean success = false;
         while (!success) {
             try {
-                game = new SudokuGame(10);
+                game = new SudokuGame(Settings.getInstance().startingPieces);
                 success = true;
             } catch (InterruptedException e) {
             }
