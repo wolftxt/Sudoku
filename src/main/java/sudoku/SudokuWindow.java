@@ -157,7 +157,7 @@ public class SudokuWindow extends javax.swing.JFrame {
 
         JMenuItem settings = new JMenuItem("Settings");
         settings.addActionListener(e -> {
-            System.out.println("NOT IMPLEMENTED");
+            new SettingsDialog(this);
         });
         game.add(settings);
 
