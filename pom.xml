@@ -8,7 +8,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>21</maven.compiler.release>
-        <exec.mainClass>sudoku.Sudoku</exec.mainClass>
+        <exec.mainClass>sudoku.SudokuWindow</exec.mainClass>
         <lombok.version>1.18.38</lombok.version>
     </properties>
     <dependencies>
