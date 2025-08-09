@@ -9,9 +9,8 @@ public class SudokuWidget extends JComponent {
 
     private static final Color GRID = Color.BLACK;
     private static final int MARGIN = 5;
-    private static final Color[] COLORS = new Color[]{new Color(0, 0, 0, 0), Color.RED, new Color(255, 127, 0), Color.YELLOW, Color.GREEN, new Color(0, 127, 0), Color.CYAN, Color.BLUE, Color.PINK, new Color(170, 0, 170)};
-    private static final Color DEFAULTCOLOR = Color.WHITE; // Color used for larger boards than 9x9
 
+    private Color[] colors;
     private SudokuGame game;
     private int selected;
 
@@ -52,7 +51,22 @@ public class SudokuWidget extends JComponent {
         }
         selected = 0;
         interruptThread.interrupt();
+
+        generateColors(size * size);
         this.repaint();
+    }
+
+    private void generateColors(int count) {
+        colors = new Color[count + 1];
+        colors[0] = new Color(0, 0, 0, 0);
+        float startHue = 0.0f;
+        float endHue = 0.83f;
+        float increment = (endHue - startHue) / (count - 1);
+        for (int i = 0; i < colors.length - 1; i++) {
+            float hue = startHue + (i * increment);
+            int rgb = Color.HSBtoRGB(hue, 1.0f, 1.0f);
+            colors[i + 1] = new Color(rgb);
+        }
     }
 
     public void setSelected(int val) {
@@ -152,8 +166,7 @@ public class SudokuWidget extends JComponent {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
                 int num = board[x][y];
-                Color c = game.getSize() > 9 && num > 9 ? DEFAULTCOLOR : COLORS[num];
-                g.setColor(c);
+                g.setColor(colors[num]);
                 int xStart = xOffset + x * s + s / 4 + MARGIN; // adding s / 4 centralises the numbers
                 int yStart = (y + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
                 g.drawString(Integer.toString(num, Character.MAX_RADIX), xStart, yStart);
@@ -170,8 +183,7 @@ public class SudokuWidget extends JComponent {
             }
             g.setColor(GRID);
             g.drawRect(xStart, i * s + MARGIN, s, s);
-            Color c = game.getSize() > 9 && i > 9 ? DEFAULTCOLOR : COLORS[i];
-            g.setColor(c);
+            g.setColor(colors[i]);
             int x = xStart + s / 4; // adding s / 4 centralises the numbers
             int y = (i + 1) * s - s / 4 + MARGIN; // + 1 because strings are drawn in the top right direction
             g.drawString(Integer.toString(i, Character.MAX_RADIX), x, y);
@@ -189,7 +201,7 @@ public class SudokuWidget extends JComponent {
         if (selected != 0 && game.isPlacementLegal(x, y, selected)) {
             return settings.LEGAL_MOVE_COLOR;
         }
-        return COLORS[0];
+        return colors[0];
     }
 
 }
