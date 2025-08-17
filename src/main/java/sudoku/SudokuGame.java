@@ -6,6 +6,11 @@ import java.util.List;
 import java.util.Random;
 import lombok.Data;
 
+/**
+ * Class storing the state of the game and major pieces of game logic
+ *
+ * @author davidwolf
+ */
 @Data
 public class SudokuGame {
 
