@@ -36,6 +36,16 @@ public class SudokuSolver {
         return true;
     }
 
+    /**
+     * Recursive backtracking algorithm that solves the sudoku board, uses
+     * exponential time complexity
+     *
+     * @param board
+     * @param x
+     * @param y
+     * @return
+     * @throws InterruptedException
+     */
     public static boolean solve(int[][] board, int x, int y) throws InterruptedException {
         if (Thread.interrupted()) {
             throw new InterruptedException("Was interrupted during the solve method");
