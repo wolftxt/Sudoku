@@ -10,6 +10,11 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.URL;
 
+/**
+ * Singleton class used to store, save and load the game settings.
+ *
+ * @author davidwolf
+ */
 public class Settings implements Serializable {
 
     private static final String FILENAME = "Settings";
