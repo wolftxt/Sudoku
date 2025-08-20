@@ -5,6 +5,11 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import javax.swing.*;
 
+/**
+ * Popup used as GUI for the game settings
+ *
+ * @author davidwolf
+ */
 public class SettingsDialog extends JDialog {
 
     public SettingsDialog(JFrame parent) {
