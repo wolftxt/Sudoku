@@ -5,6 +5,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import javax.swing.JComponent;
 
+/**
+ * JComponent class showing the sudoku board and all the selectable numbers.
+ * Allows the user to select the numbers by clicking and change the numbers on
+ * the board by clicking on them. Also allows the user to select from the
+ * selectable numbers by typing the keys that represent those numbers on their
+ * keyboard.
+ *
+ * @author davidwolf
+ */
 public class SudokuWidget extends JComponent {
 
     private static final Color GRID = Color.BLACK;
