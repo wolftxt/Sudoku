@@ -12,6 +12,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+/**
+ * Main class holding the window, eventqueue, JMenuBar, widget. Also configures
+ * keybinds
+ *
+ * @author davidwolf
+ */
 public class SudokuWindow extends javax.swing.JFrame {
 
     JMenuBar bar;
