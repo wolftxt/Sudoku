@@ -14,6 +14,16 @@ public class SudokuSolver {
         return true;
     }
 
+    /**
+     * Checks if the move described by the arguments is legal. Assumes that the
+     * number hasn't been placed yet.
+     *
+     * @param board
+     * @param x
+     * @param y
+     * @param num
+     * @return
+     */
     public static boolean isValid(int[][] board, int x, int y, int num) {
         for (int i = 0; i < board.length; i++) {
             if (board[x][i] == num) {
