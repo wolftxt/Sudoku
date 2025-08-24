@@ -16,6 +16,7 @@ import javax.swing.JComponent;
  */
 public class SudokuWidget extends JComponent {
 
+    private static final Color BG = new Color(60, 60, 60);
     private static final Color GRID = Color.BLACK;
     private static final int MARGIN = 5;
 
@@ -139,11 +140,15 @@ public class SudokuWidget extends JComponent {
         super.paintComponent(g);
         final int SIZE = game.getSize();
         int[][] board = game.getBoard();
-
+        
         int s = getScaling(SIZE, SIZE);
         int xOffset = getXOffset(SIZE, SIZE);
 
         Settings settings = Settings.getInstance();
+        
+        // Draw background
+        g.setColor(BG);
+        g.fillRect(0, 0, this.getWidth(), this.getHeight());
 
         // Draw opaque colors
         for (int x = 0; x < SIZE; x++) {
