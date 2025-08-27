@@ -6,7 +6,8 @@ import java.lang.reflect.Field;
 import javax.swing.*;
 
 /**
- * Popup used as GUI for the game settings
+ * Popup used as GUI for the game settings. Iterates and shows every field in
+ * Settings.java
  *
  * @author davidwolf
  */
@@ -108,6 +109,13 @@ public class SettingsDialog extends JDialog {
         }
     }
 
+    /**
+     * Handles user input, sets value both to JLabel and field.
+     *
+     * @param field
+     * @param object
+     * @param label
+     */
     private void setSetting(Field field, Object object, JLabel label) {
         Settings gs = Settings.getInstance();
         try {
