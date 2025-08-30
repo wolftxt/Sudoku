@@ -13,8 +13,8 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
 /**
- * Main class holding the window, eventqueue, JMenuBar, widget. Also configures
- * keybinds
+ * Main class holding the window, eventqueue (used to store user inputs to
+ * offload work from EDT), JMenuBar, widget. Also configures keybinds
  *
  * @author davidwolf
  */
