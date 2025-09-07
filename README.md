@@ -33,4 +33,7 @@ This application's solver is a simple backtracking algorithm with an exponential
 
 This game is designed to be launched using your **GameLauncher** application.
 
-1.  **Download via GameLauncher** Use the Browse tab of your GameLauncher to find and install the Sudoku game.
+1.  **Download via GameLauncher**
+  - Use the Browse tab of your GameLauncher to find and install the Sudoku game.
+2.  **Download Sudoku.jar**
+  - Download the Sudoku.jar file, navigate to the directory with the file and run java -jar Sudoku.jar
