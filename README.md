@@ -37,3 +37,4 @@ This game is designed to be launched using your **GameLauncher** application.
   - Use the Browse tab of your GameLauncher to find and install the Sudoku game.
 2.  **Download Sudoku.jar**
   - Download the Sudoku.jar file, navigate to the directory with the file and run java -jar Sudoku.jar
+3. **Compile the project yourself**
